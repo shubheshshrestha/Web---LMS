@@ -132,7 +132,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES":
-    ["rest_framework.authentication.TokenAuthentication"], # To restrict unauthorized user (Logged in or not)
+    ["rest_framework.authentication.TokenAuthentication",
+     'rest_framework.authentication.SessionAuthentication',
+     ], # To restrict unauthorized user (Logged in or not)
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",
     "rest_framework.permissions.DjangoModelPermissions"] # If the logged in user has permission or not
 }

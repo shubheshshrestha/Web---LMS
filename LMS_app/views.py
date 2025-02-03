@@ -24,10 +24,12 @@ class BookTypeView(ModelViewSet):
     serializer_class = BookTypeSerializer
 
 class BorrowingRecordView(ModelViewSet):
+    permission_classes = []
     queryset = BorrowingRecord.objects.all()
     serializer_class = BorrowingRecordSerializer
 
 class MemberView(ModelViewSet):
+    permission_classes = []
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
 
