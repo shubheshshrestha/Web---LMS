@@ -32,7 +32,7 @@ class BorrowingRecord(models.Model):
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     member = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True)
     borrowed_date = models.DateTimeField(auto_now_add=True)
-    due_date = models.DateTimeField(default=lambda: datetime.now() + timedelta(days=30))
+    due_date = models.DateTimeField(    datetime.now() + timedelta(days=30))
     returned_date = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=[
         ('borrowed', 'Borrowed'),

@@ -30,3 +30,6 @@ urlpatterns = [
     path('book-type/<int:pk>/', BookTypeView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"})),
     path('borrowing-record/', BorrowingRecordView.as_view({"get": "list", "post": "create"}))
 ]
+
+
+
