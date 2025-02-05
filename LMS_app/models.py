@@ -1,6 +1,7 @@
 from django.db import models
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.contrib.auth.models import User, Group, AbstractUser
+from rest_framework.permissions import BasePermission
 
 # Create your models here.
 
@@ -24,15 +25,24 @@ class Member(models.Model):
     phone = models.CharField(max_length=10, default="0000000000")
     address = models.CharField(max_length=255, default="Unknown Address")
     membership_date = models.DateTimeField(auto_now_add=True)
+    # is_active_member = models.BooleanField(default=False) # Track active membership
 
     def __str__(self):
         return f"{self.full_name} ({self.membership_id})"
+    
+class IsMember(BasePermission):  # To allow only members to borrow books
+
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:  # Member or not
+            return Member.objects.filter(membership_id=request.user).exists()
+        return False
+       
     
 class BorrowingRecord(models.Model):
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     member = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True)
     borrowed_date = models.DateTimeField(auto_now_add=True)
-    due_date = models.DateTimeField(datetime.now() + timedelta(days=30))
+    due_date = models.DateTimeField()
     returned_date = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=[
         ('borrowed', 'Borrowed'),
@@ -40,19 +50,28 @@ class BorrowingRecord(models.Model):
         ('overdue', 'Overdue')
     ], default='borrowed')
 
-    # def update_status(self):
-    #     today = date.today()
+    def update_status(self):
+        today = date.today()
 
-    #     if self.returned_date:
-    #         self.status = 'returned'
-    #     elif self.due_date < today:
-    #         self.status = 'overdue'
-    #     else:
-    #         self.status = 'borrowed'
+        if self.returned_date:
+            self.status = 'returned'
+        elif self.due_date < today:
+            self.status = 'overdue'
+        else:
+            self.status = 'borrowed'
         
-    #     self.save()
+        self.save()
 
 # class User(AbstractUser):
 #     email = models.EmailField(unique=True)
 #     USERNAME_FIELD = "email"
 #     REQUIRED_FIELDS = ["username"] # This is only required for superuser    
+
+# class MembershipPayment(models.Model):
+#     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="payments")
+#     payment_date = models.DateTimeField(auto_now_add=True)
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     valid_until = models.DateTimeField() # Until when the payment is valid
+
+#     def __str__(self):
+#         return f"Payment by {self.member.full_name} on {self.payment_date}"

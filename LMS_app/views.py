@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from .models import Book, BookType, BorrowingRecord, Member
+from .models import Book, BookType, BorrowingRecord, Member, IsMember
 from .serializer import BookSerializer, UserSerializer, BookTypeSerializer, BorrowingRecordSerializer, MemberSerializer, LoginSerializer
 from django.contrib.auth.models import Group, User
 # from .models import User
@@ -24,7 +24,7 @@ class BookTypeView(ModelViewSet):
     serializer_class = BookTypeSerializer
 
 class BorrowingRecordView(ModelViewSet):
-    permission_classes = []
+    permission_classes = [IsMember]  # Only Members can access this view.
     queryset = BorrowingRecord.objects.all()
     serializer_class = BorrowingRecordSerializer
 
