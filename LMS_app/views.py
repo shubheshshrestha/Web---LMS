@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from .models import Book, BookType, BorrowingRecord, Member, IsMember
+from .models import Book, BookType, BorrowingRecord, Member
 from .serializer import BookSerializer, UserSerializer, BookTypeSerializer, BorrowingRecordSerializer, MemberSerializer, LoginSerializer
 from django.contrib.auth.models import Group, User
 # from .models import User
@@ -8,10 +8,11 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response 
 from django.contrib.auth import authenticate
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
+# from rest_framework.permissions import IsAuthenticated
+# from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth.hashers import make_password
 # from rest_framework_simplejwt.tokens import RefreshToken
+from .permission import IsMember
 
 class BookView(ModelViewSet):
     #permission_classes = [IsAuthenticated]

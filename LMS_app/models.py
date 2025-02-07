@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta, date
 from django.contrib.auth.models import User, Group, AbstractUser
-from rest_framework.permissions import BasePermission
+# from rest_framework.permissions import BasePermission
 
 # Create your models here.
 
@@ -29,14 +29,6 @@ class Member(models.Model):
 
     def __str__(self):
         return f"{self.full_name} ({self.membership_id})"
-    
-class IsMember(BasePermission):  # To allow only members to borrow books
-
-    def has_permission(self, request, view):
-        if request.user.is_authenticated:  # Member or not
-            return Member.objects.filter(membership_id=request.user).exists()
-        return False
-       
     
 class BorrowingRecord(models.Model):
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
