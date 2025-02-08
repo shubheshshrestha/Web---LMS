@@ -13,14 +13,18 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 # from rest_framework_simplejwt.tokens import RefreshToken
 from .permission import IsMember
+from django_filters.rest_framework import DjangoFilterBackend
 
 class BookView(ModelViewSet):
-    #permission_classes = [IsAuthenticated]
+    permission_classes = []
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'author', 'isbn', 'description', 'category']
+    search_fields = ['title', 'author', 'isbn', 'description', 'category']
 
 class BookTypeView(ModelViewSet):
-    #permission_classes = [IsAuthenticated]
+    permission_classes = []
     queryset = BookType.objects.all()
     serializer_class = BookTypeSerializer
 

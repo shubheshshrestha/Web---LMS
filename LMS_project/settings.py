@@ -136,5 +136,8 @@ REST_FRAMEWORK = {
      'rest_framework.authentication.SessionAuthentication',
      ], # To restrict unauthorized user (Logged in or not)
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",
-    "rest_framework.permissions.DjangoModelPermissions"] # If the logged in user has permission or not
+    "rest_framework.permissions.DjangoModelPermissions"], # If the logged in user has permission or not
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.SearchFilter'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 2
 }
