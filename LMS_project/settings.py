@@ -133,11 +133,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES":
     ["rest_framework.authentication.TokenAuthentication",
-     'rest_framework.authentication.SessionAuthentication',
+     'rest_framework.authentication.SessionAuthentication',  # TokenAuthentication is commonly used for API clients, while SessionAuthentication is used for web browsers.
      ], # To restrict unauthorized user (Logged in or not)
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",
-    "rest_framework.permissions.DjangoModelPermissions"], # If the logged in user has permission or not
+    "rest_framework.permissions.DjangoModelPermissions"], # If the logged in user has permission or not. Also, IsAuthenticated ensures users are logged in, and DjangoModelPermissions enforces model-level permissions.
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.SearchFilter'],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 2
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',  # LimitOffsetPagination allows clients to specify a limit (number of items) and an offset (starting point).
+    'PAGE_SIZE': 2                                         # CustomPagination                     
 }
